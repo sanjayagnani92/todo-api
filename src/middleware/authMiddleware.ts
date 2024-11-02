@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { verifyAccessToken } from "@utils/jwtUtils";
+import { verifyAccessToken } from "../utils/jwtUtils";
 
 interface AuthenticatedRequest extends Request {
-  user?: string;
+  userId?: string;
 }
 
 const protectedRoute = (
@@ -16,7 +16,7 @@ const protectedRoute = (
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = verifyAccessToken(token) as jwt.JwtPayload;
-      req.user = decoded.id;
+      req.userId = decoded.userId;
       next();
     } catch (error) {
       res.status(401).json({ message: "Not authorized, token failed" });

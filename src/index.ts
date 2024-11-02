@@ -1,5 +1,8 @@
 import { connectDB, pingDB } from "./config/db";
-import userRoutes from "./routes/auth.routes";
+import protectedRoute from "./middleware/authMiddleware";
+import userRoutes from "./routes/user.routes";
+import todoRoutes from "./routes/todo.routes";
+import authRoutes from "./routes/auth.routes";
 
 const express = require("express");
 const dotenv = require("dotenv");
@@ -11,7 +14,11 @@ connectDB();
 const app = express();
 app.use(bodyParser.json());
 app.use(express.json());
-app.use("/api/users", userRoutes);
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", protectedRoute, userRoutes);
+app.use("/api/todos", protectedRoute, todoRoutes);
+
 const port = process.env.PORT;
 
 app.get("/", async (_req: any, res: any) => {
