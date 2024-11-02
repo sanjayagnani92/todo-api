@@ -1,17 +1,12 @@
 import express from "express";
-import {
-  register,
-  login,
-  logout,
-  refreshToken,
-} from "../controllers/userController";
+import { getUserDetails } from "../controllers/authController";
 
 const router = express.Router();
 
-// TODO implement routes - modify the controller
-router.get(":userId", register);
-router.get("/users", login);
-router.patch(":userId", logout);
-router.delete(":userId", refreshToken);
-
+router.get(":userId", getUserDetails);
 export default router;
+
+// router.get("/users", login); -- analytics
+
+// router.patch(":userId", updateUserDetails);
+// router.delete(":userId", deleteAccount); - appStrore

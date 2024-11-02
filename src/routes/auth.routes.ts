@@ -4,7 +4,7 @@ import {
   login,
   logout,
   refreshToken,
-} from "../controllers/userController";
+} from "../controllers/authController";
 
 const router = express.Router();
 
@@ -14,3 +14,5 @@ router.post("/logout", logout);
 router.post("/refresh-token", refreshToken);
 
 export default router;
+
+// router.post("/logout-all", logoutAllDevevices); - logout all devices functionality

@@ -43,7 +43,6 @@ export const loginUser = async (email: string, password: string) => {
   return { accessToken, refreshToken, id: user._id };
 };
 
-// TODO: implement logout from all devices
 export const logoutUser = async (userId: string, refreshToken: string) => {
   await Token.findOneAndDelete({ userId, token: refreshToken });
 };
