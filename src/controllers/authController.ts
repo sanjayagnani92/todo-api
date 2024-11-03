@@ -1,23 +1,53 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as authService from "../services/authService";
+import { validationResult } from "express-validator";
+import { LoginPayload, RegistrationPayload } from "./payload";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request<{}, {}, RegistrationPayload>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, password }: { email: string; password: string } = req.body;
+  const errors = await validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+    return;
+  }
   try {
-    const { name, email, password } = req.body;
-    const userId = await authService.registerUser(name, email, password);
-    res.status(201).json({ userId });
+    const response = await authService.registerUser(email, password);
+    res.status(201).json({ response });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    next(error);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request<{}, {}, LoginPayload>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const errors = await validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+    return;
+  }
+  const { email, password }: { email: string; password: string } = req.body;
+
   try {
-    const { email, password } = req.body;
     const loginResponse = await authService.loginUser(email, password);
-    res.json(loginResponse);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(200).json({
+      success: true,
+      data: loginResponse,
+    });
+  } catch (error: any) {
+    next(error);
   }
 };
 

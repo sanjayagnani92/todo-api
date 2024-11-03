@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as todoService from "../services/todoService";
+import { validationResult } from "express-validator";
 
 interface CustomRequest extends Request {
   userId?: string;
@@ -25,6 +26,14 @@ export const getAllTodos = async (req: CustomRequest, res: Response) => {
 };
 
 export const createTodo = async (req: CustomRequest, res: Response) => {
+  const errors = await validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+    return;
+  }
   try {
     const todos = await todoService.createTodo(req.userId, req.body);
     res.status(200).json(todos);

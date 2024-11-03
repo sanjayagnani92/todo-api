@@ -67,7 +67,4 @@ This project is an Express.js server that includes a scheduled cron job, JWT-bas
     });
     ```
 
-Validation - emailName , password - prev Password, valid ObjectId, input Payload using middleware
 getTodos => QueryParams - pagination , limit, isCompleted
-Request: Interface, Response standard for error messages
-try-catch
