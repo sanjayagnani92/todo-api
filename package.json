@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsc --project ./",
     "dev": "nodemon src/index.ts",
-    "test": "vitest",
     "seed": "ts-node -r dotenv/config ./src/seed/seed.ts",
     "start": "node dist/index.js"
   },

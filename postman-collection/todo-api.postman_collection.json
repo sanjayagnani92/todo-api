@@ -1,0 +1,321 @@
+{
+	"info": {
+		"_postman_id": "52876fb3-6379-47be-90ae-8861ba0bc1db",
+		"name": "todo-api",
+		"description": "/auth routes - login , registration , logout, refresh-token\n\n/user routes - get Profile, update profile , delete account\n\n/todo routes - CRUD operation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37656762"
+	},
+	"item": [
+		{
+			"name": "todo",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Title -4 - new created \",\n    \"description\": \"Watch a documentary\",\n    \"completed\": false,\n    \"dueDate\": \"2024-11-03T13:11:16.707Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverUrl}}/api/todos/create",
+							"host": [
+								"{{serverUrl}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"create"
+							]
+						},
+						"description": "create a todo"
+					},
+					"response": []
+				},
+				{
+					"name": "getAll Todo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serverUrl}}/api/todos",
+							"host": [
+								"{{serverUrl}}"
+							],
+							"path": [
+								"api",
+								"todos"
+							]
+						},
+						"description": "get All Todo for user"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Todo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{serverUrl}}/api/todos/delete/672624f4f0f2feecc37ebf02",
+							"host": [
+								"{{serverUrl}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"delete",
+								"672624f4f0f2feecc37ebf02"
+							]
+						},
+						"description": "delete a todo"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Todo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Title -4 - new created - updatederr \",\n    \"completed\": true,\n    \"dueDate\": \"2024-11-03T13:11:16.707Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverUrl}}/api/todos/update/67268166c16f9b24b67f4912",
+							"host": [
+								"{{serverUrl}}"
+							],
+							"path": [
+								"api",
+								"todos",
+								"update",
+								"67268166c16f9b24b67f4912"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "get User Detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{serverUrl}}/api/users",
+							"host": [
+								"{{serverUrl}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"sanjay agnani\",\n    \"email\":\"sanjay@gmail.com\",\n    \"password\":\"Password@123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/auth/register",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"accessToken\", jsonData.token.accessToken);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"sanjay@gmail.com\",\n    \"password\": \"Password@123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/auth/login",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"accessToken\", jsonData.token.accessToken);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzI2NmMzY2M2OTgwYjBjZTZjOTRkZmMiLCJpYXQiOjE3MzA1NzYyMzEsImV4cCI6MTczMTE4MTAzMX0.TQynExn6e8lvpZ80J3vWDw13f_ycqD8AbeFhW4--9tg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{serverUrl}}/api/auth/refresh-token",
+					"host": [
+						"{{serverUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

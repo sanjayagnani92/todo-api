@@ -32,7 +32,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", protectedRoute, userRoutes);
 app.use("/api/todos", protectedRoute, todoRoutes);
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.get("/", async (_req: any, res: any) => {
   try {
