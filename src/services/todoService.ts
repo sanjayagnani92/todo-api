@@ -1,20 +1,23 @@
+import CustomError from "../utils/CustomError";
 import { ITodo, Todo } from "../models/todoModel";
 
 export const getTodoDetails = async (todoId: string, userId: string) => {
   const todoDetails = await Todo.findOne({ id: todoId, userId });
-  if (!todoDetails) throw new Error("Todo does not exists");
+  if (!todoDetails) throw new CustomError("Todo does not exists", 400);
 
   return todoDetails;
 };
 
-export const getAllTodos = async (userId: string) => {
+export const getAllTodos = async (userId: string): Promise<ITodo[]> => {
+  // TODO : add filters and pagination
   const todoDetails = await Todo.find({ userId });
-  if (!todoDetails) throw new Error("Todo does not exists For this user");
-
   return todoDetails;
 };
 
-export const createTodo = async (userId: string, todo: ITodo) => {
+export const createTodo = async (
+  userId: string,
+  todo: ITodo
+): Promise<ITodo | null> => {
   return await Todo.create({ ...todo, userId });
 };
 
@@ -22,16 +25,21 @@ export const updateTodo = async (
   todoId: string,
   userId: string,
   todo: ITodo
-) => {
+): Promise<ITodo | null> => {
   try {
-    return await Todo.updateOne({ _id: todoId, userId }, todo);
+    return await Todo.findOneAndUpdate({ _id: todoId, userId }, todo, {
+      new: true,
+    });
   } catch (error) {
     console.debug(error);
+    throw new CustomError("Unable to update", 500);
   }
-  return await Todo.updateOne({ _id: todoId }, todo);
 };
 
-export const deleteTodo = async (userId: string, todoId: string) => {
+export const deleteTodo = async (
+  userId: string,
+  todoId: string
+): Promise<void> => {
   try {
     await Todo.deleteOne({ _id: todoId, userId });
   } catch (error) {

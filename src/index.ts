@@ -4,6 +4,7 @@ import userRoutes from "./routes/user.routes";
 import todoRoutes from "./routes/todo.routes";
 import authRoutes from "./routes/auth.routes";
 import { deletePastDueTodos } from "./cronJob/deleteDueDateToDoCronJob";
+import { errorMiddleware } from "./middleware/errorMiddleware";
 
 const express = require("express");
 const dotenv = require("dotenv");
@@ -50,6 +51,8 @@ app.get("/", async (_req: any, res: any) => {
     });
   }
 });
+
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.debug(
