@@ -35,16 +35,17 @@ export const createTodo = async (req: CustomRequest, res: Response) => {
 
 export const updateTodo = async (req: CustomRequest, res: Response) => {
   try {
-    const todo = await todoService.updateTodo(req.userId, req.body);
+    const { todoId } = req.params;
+    const todo = await todoService.updateTodo(todoId, req.userId, req.body);
     res.status(200).json(todo);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-export const deleteTodo = async (req: Request, res: Response) => {
+export const deleteTodo = async (req: CustomRequest, res: Response) => {
   try {
-    await todoService.deleteTodo(req.params.todoId);
+    await todoService.deleteTodo(req.userId, req.params.todoId);
     res.status(204).end();
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -5,20 +5,22 @@
   "main": "src/index.js",
   "scripts": {
     "build": "tsc --project ./",
-    "start:dev": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts",
     "test": "vitest",
     "seed": "ts-node -r dotenv/config ./src/seed/seed.ts",
-    "start:prod": "node dist/index.js"
+    "start": "node dist/index.js"
   },
   "author": "sanjay-agnani",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.3",
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.0",
+    "morgan": "^1.10.0",
     "node-cron": "^3.0.3"
   },
   "devDependencies": {

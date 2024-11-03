@@ -23,4 +23,7 @@ const todoSchema = new Schema<ITodo>({
   updatedBy: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
+todoSchema.set("toJSON", {
+  versionKey: false,
+});
 export const Todo = mongoose.model<ITodo>("Todo", todoSchema);

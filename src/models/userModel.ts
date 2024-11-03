@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUser extends Document {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -16,5 +17,7 @@ const userSchema = new Schema<IUser>(
   },
   { collection: "users" }
 );
-
+userSchema.set("toJSON", {
+  versionKey: false,
+});
 export const User = mongoose.model<IUser>("User", userSchema);

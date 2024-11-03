@@ -4,7 +4,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from "../utils/jwtUtils";
-import { User } from "../models/userModel";
+import { IUser, User } from "../models/userModel";
 import { Token } from "../models/tokenModel";
 
 export const registerUser = async (
@@ -27,10 +27,7 @@ export const registerUser = async (
 };
 
 export const loginUser = async (email: string, password: string) => {
-  const user = (await User.findOne({ email })) as {
-    _id: string;
-    password: string;
-  };
+  const user: IUser = await User.findOne({ email });
   if (!user) throw new Error("Invalid credentials");
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -39,8 +36,15 @@ export const loginUser = async (email: string, password: string) => {
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken(user._id);
   await Token.create({ userId: user._id, token: refreshToken });
-
-  return { accessToken, refreshToken, id: user._id };
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    token: {
+      accessToken,
+      refreshToken,
+    },
+  };
 };
 
 export const logoutUser = async (userId: string, refreshToken: string) => {
@@ -59,5 +63,24 @@ export const refreshAccessToken = async (refreshToken: string) => {
   if (!existingToken) throw new Error("Invalid refresh token");
 
   const accessToken = generateAccessToken(payload.userId);
-  return accessToken;
+
+  const newRefreshToken = generateRefreshToken(payload.userId);
+  await Token.updateOne(
+    {
+      _id: existingToken.id,
+      userId: payload.userId,
+      token: refreshToken,
+    },
+    {
+      token: newRefreshToken,
+    }
+  );
+
+  return {
+    id: payload.userId,
+    token: {
+      accessToken,
+      refreshToken: newRefreshToken,
+    },
+  };
 };
