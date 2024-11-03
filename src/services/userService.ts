@@ -1,11 +1,9 @@
 import { User } from "../models/userModel";
 
 export const getUserDetails = async (userId: string) => {
-  const userDetails = await User.findOne({ id: userId });
+  const userDetails = await (await User.findOne({ _id: userId })).toJSON();
+
   if (!userDetails) throw new Error("User does not exists");
-
-  // TODO: Remove password from userDetails on schema level
   delete userDetails.password;
-
   return userDetails;
 };
